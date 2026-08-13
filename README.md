@@ -4,7 +4,7 @@
 
 **The AI workspace for product managers.**
 Cursor's interaction model, applied to product decisions instead of code.
-### [→ Open the landing page](https://prism-landing-delta.vercel.app/))
+### [→ Open the landing page](https://prism-landing-delta.vercel.app/)
 
 </div>
 
