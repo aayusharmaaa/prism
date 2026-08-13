@@ -1,0 +1,408 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Prism design tokens.
+   Tailwind v4 compiles utilities to var() references, so overriding a
+   token under [data-theme="light"] flips the whole app.
+------------------------------------------------------------------- */
+@theme {
+  --color-app: #131316;
+  --color-sidebar: #171719;
+  --color-editor: #1c1c1f;
+  --color-panel: #171719;
+  --color-elevated: #212127;
+  --color-hover: #26262d;
+  --color-active: #2e2e37;
+  --color-line: #2a2a31;
+  --color-line-strong: #3a3a44;
+
+  --color-fg: #e6e6ea;
+  --color-fg-muted: #a0a0ac;
+  --color-fg-dim: #6e6e7a;
+
+  --color-accent: #6d68f5;
+  --color-accent-hover: #7f7bf7;
+  --color-accent-soft: #1e1c3a;
+  --color-on-accent: #ffffff;
+
+  --color-ok: #34d399;
+  --color-warn: #fbbf24;
+  --color-danger: #f87171;
+  --color-info: #60a5fa;
+
+  --color-add: #34d399;
+  --color-del: #f87171;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Code",
+    Consolas, monospace;
+
+  --radius-panel: 0.5rem;
+}
+
+[data-theme="light"] {
+  --color-app: #f4f4f6;
+  --color-sidebar: #fafafa;
+  --color-editor: #ffffff;
+  --color-panel: #fafafa;
+  --color-elevated: #ffffff;
+  --color-hover: #eeeef1;
+  --color-active: #e3e3e8;
+  --color-line: #e2e2e7;
+  --color-line-strong: #cfcfd6;
+
+  --color-fg: #1c1c22;
+  --color-fg-muted: #55555f;
+  --color-fg-dim: #8a8a94;
+
+  --color-accent: #5b56ea;
+  --color-accent-hover: #4b46da;
+  --color-accent-soft: #eeedfe;
+
+  --color-ok: #059669;
+  --color-warn: #b45309;
+  --color-danger: #dc2626;
+  --color-info: #2563eb;
+
+  --color-add: #059669;
+  --color-del: #dc2626;
+}
+
+/* ------------------------------------------------------------------ */
+
+* {
+  border-color: var(--color-line);
+  min-width: 0;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--color-app);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-accent) 38%, transparent);
+}
+
+/* Thin, IDE-style scrollbars ---------------------------------------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--color-fg-dim) 35%, transparent);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--color-fg-dim) 60%, transparent);
+  background-clip: content-box;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Focus rings: visible but not shouty ------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+textarea,
+input {
+  font-family: inherit;
+}
+
+/* ------------------------------------------------------------------
+   Utility layer
+------------------------------------------------------------------- */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility drag-region {
+  -webkit-app-region: drag;
+}
+
+/* ------------------------------------------------------------------
+   Markdown rendering (agent messages + document preview)
+------------------------------------------------------------------- */
+.prose-prism {
+  color: var(--color-fg);
+  line-height: 1.65;
+}
+.prose-prism > * + * {
+  margin-top: 0.75em;
+}
+.prose-prism h1,
+.prose-prism h2,
+.prose-prism h3,
+.prose-prism h4 {
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-fg);
+}
+.prose-prism h1 {
+  font-size: 1.5em;
+  margin-top: 1.4em;
+}
+.prose-prism h2 {
+  font-size: 1.22em;
+  margin-top: 1.3em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--color-line);
+}
+.prose-prism h3 {
+  font-size: 1.06em;
+  margin-top: 1.2em;
+}
+.prose-prism h4 {
+  font-size: 1em;
+  color: var(--color-fg-muted);
+  margin-top: 1.1em;
+}
+.prose-prism p {
+  margin-block: 0.6em;
+}
+.prose-prism ul,
+.prose-prism ol {
+  padding-left: 1.35em;
+  margin-block: 0.6em;
+}
+.prose-prism ul {
+  list-style: disc;
+}
+.prose-prism ol {
+  list-style: decimal;
+}
+.prose-prism li {
+  margin-block: 0.25em;
+}
+.prose-prism li::marker {
+  color: var(--color-fg-dim);
+}
+.prose-prism a {
+  color: var(--color-info);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-prism strong {
+  font-weight: 600;
+  color: var(--color-fg);
+}
+.prose-prism code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--color-hover);
+  padding: 0.12em 0.36em;
+  border-radius: 4px;
+  border: 1px solid var(--color-line);
+}
+.prose-prism pre {
+  background: var(--color-app);
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  padding: 0.85em 1em;
+  overflow-x: auto;
+  font-size: 0.88em;
+}
+.prose-prism pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 1em;
+}
+.prose-prism blockquote {
+  border-left: 3px solid var(--color-accent);
+  padding-left: 0.9em;
+  color: var(--color-fg-muted);
+  font-style: italic;
+}
+.prose-prism hr {
+  border: none;
+  border-top: 1px solid var(--color-line);
+  margin-block: 1.5em;
+}
+.prose-prism table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.94em;
+  display: block;
+  overflow-x: auto;
+}
+.prose-prism th,
+.prose-prism td {
+  border: 1px solid var(--color-line);
+  padding: 0.44em 0.7em;
+  text-align: left;
+  vertical-align: top;
+}
+.prose-prism th {
+  background: var(--color-hover);
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------------
+   Animations
+------------------------------------------------------------------- */
+@keyframes prism-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-fade-up {
+  animation: prism-fade-up 0.16s ease-out;
+}
+
+@keyframes prism-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-pop {
+  animation: prism-pop 0.12s ease-out;
+}
+
+@keyframes prism-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--color-fg) 8%, transparent),
+    transparent
+  );
+  animation: prism-shimmer 1.4s infinite;
+}
+
+/* ------------------------------------------------------------------
+   Print — used by "Export as PDF", which routes through the browser's
+   own print pipeline. Everything except the rendered document is hidden.
+------------------------------------------------------------------- */
+@media print {
+  html,
+  body {
+    height: auto;
+    overflow: visible;
+    background: #fff;
+    color: #111;
+  }
+
+  /* Chrome, panels, and controls have no place on paper. */
+  header,
+  nav,
+  footer,
+  aside,
+  [role="separator"],
+  [data-print="hide"] {
+    display: none !important;
+  }
+
+  /* Collapse the app's flex shell so the article can flow across pages. */
+  body *,
+  main {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+
+  .prose-prism {
+    max-width: none;
+    color: #111;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+  .prose-prism a {
+    color: #111;
+    text-decoration: underline;
+  }
+  /* Print the destination of links, which are useless as bare text on paper. */
+  .prose-prism a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #555;
+  }
+  .prose-prism h1,
+  .prose-prism h2,
+  .prose-prism h3 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  .prose-prism pre,
+  .prose-prism table,
+  .prose-prism blockquote {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .prose-prism table {
+    display: table;
+    width: 100%;
+  }
+  .prose-prism th {
+    background: #f2f2f2 !important;
+  }
+
+  @page {
+    margin: 18mm 16mm;
+  }
+}
+
+/* Streaming caret shown at the end of in-flight assistant text */
+@keyframes prism-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.caret::after {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  background: var(--color-accent);
+  animation: prism-blink 1s steps(1) infinite;
+}

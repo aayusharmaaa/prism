@@ -1,0 +1,26 @@
+node_modules/
+.next/
+out/
+build/
+
+.env
+.env.local
+.env*.local
+
+# libSQL database files
+.data/
+*.db
+*.db-journal
+*.db-wal
+
+# Local editor/agent config — contains absolute machine paths and
+# per-machine permissions, so it is deliberately not published.
+.claude/
+
+.DS_Store
+*.pem
+npm-debug.log*
+yarn-error.log*
+.vercel
+next-env.d.ts
+*.tsbuildinfo
