@@ -226,15 +226,3 @@ A README that only lists strengths tells you nothing.
 
 ---
 
-## Landing page
-
-`landing/` is a self-contained marketing page — one HTML file, no build step, no
-dependencies, no network requests. Prism keeps its workspace in a local
-database, so the app itself can't run on serverless hosting; the landing page
-can be deployed on its own:
-
-```bash
-cd landing && npx vercel deploy --prod
-```
-
-See [`landing/README.md`](landing/README.md) for details.
