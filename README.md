@@ -1,6 +1,6 @@
 <div align="center">
 
-# Prism
+# Prism (Cursor for PMs)
 
 **The AI workspace for product managers.**
 Cursor's interaction model, applied to product decisions instead of code.
