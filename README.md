@@ -211,9 +211,7 @@ a running server:
 
 ---
 
-## What this does not do
-
-A README that only lists strengths tells you nothing.
+## What this does not do (In the pipeline)
 
 | | |
 | --- | --- |
